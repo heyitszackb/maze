@@ -1,0 +1,193 @@
+The first character dictates the first three. The last one could always be an elevator space.
+
+    C: The tile is a color tile (vortex, search, exit, or capture tile)
+        V: Vortex
+            Y: Yellow
+                0:
+                e:
+                E:
+            G: Green
+                0:
+                e:
+                E:
+            O: Orange
+                0:
+                e:
+                E:
+            P: Purple
+                0:
+                e:
+                E:
+        S: Search
+            Y: Yellow
+                0:
+                e:
+                E:
+            G: Green
+                0:
+                e:
+                E:
+            O: Orange
+                0:
+                e:
+                E:
+            P: Purple
+                0:
+                e:
+                E:
+        X: Exit
+            Y: Yellow
+                0:
+                e:
+                E:
+            G: Green
+                0:
+                e:
+                E:
+            O: Orange
+                0:
+                e:
+                E:
+            P: Purple
+                0:
+                e:
+                E:
+        C: Capture
+            Y: Yellow
+                0:
+                e:
+                E:
+            G: Green
+                0:
+                e:
+                E:
+            O: Orange
+                0:
+                e:
+                E:
+            P: Purple
+                0:
+                e:
+                E:
+
+    S: The tile is a special tile (timer,mage_ball,security_camera, card_enter)
+        T: Timer
+            0:
+                0:
+                e:
+                E:
+        M: Mage_ball
+            0:
+                0:
+                e:
+                E:
+        S: security_camera
+            0:
+                0:
+                e:
+                E:
+        E: card_enter
+            0:
+                0:
+                e:
+                E:
+    0: The tile is an empty space (could still have an elevator connection)
+        0:
+            0:
+                e:
+                E:
+    .: The tile is blocked here
+        .:
+            .:
+                .:
+    -: There is a horizontal or vertical connection to the tiles above or beside this.
+        -:
+            -:
+                -:
+
+Fourth Character:
+    e represents beginning/end of first elevator
+    E represents beginning/end of second elevator
+
+
+
+
+
+TODO: Analyze all of the different tile types all at once to find patterns to figure out
+how it makes sense to encode this data.
+
+
+
+lowercase indicate from there to there is an elevator.
+But there is a problem because what if there are multiple elevators : (
+
+
+XX = Empty Space
+
+
+O = ORANGE
+P = PURPLE
+
+S = SEARCH
+V = VORTEX
+
+
+. = Placeholder, has no meaning
+0 = empty space with nothing in it
+- = connects two horizontal cells
+| = connects two vertical cells
+
+
+T = Timer
+
+o = orange_search
+g = green_search
+p = purple_search
+y = yellow_search
+
+O = orange_vortex
+G = green_vortex
+P = purple_vortex
+Y = yellow_search
+
+
+
+0...Y..
+|...|..
+o...0-0
+|...|.|
+0-0-0.0
+..|...|
+..g...0
+
+All spaces:
+
+Timer
+
+green_exit
+blue_exit
+yellow_exit
+red_exit
+
+green_capture
+blue_capture
+yellow_capture
+red_capture
+
+green_vortex
+blue_vortex
+yellow_vortex
+red_vortex
+
+green_search
+blue_search
+yellow_search
+red_search
+
+mage_ball
+security_camera
+
+wall_space
+green_wall_space
+enter_space
+empty_space
