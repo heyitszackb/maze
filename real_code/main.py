@@ -32,6 +32,10 @@ class App:
             print("actions")
             self.game.shift_actions()
         self.game.detect_inputs()
+        self.game.update_frame()
+        if self.game.timer.isEmpty():
+            pyxel.quit()
+            # load exit screen
 
 
 

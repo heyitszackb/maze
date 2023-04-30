@@ -6,6 +6,8 @@ from mappings import player_action_mappings, controls
 from Board import Board
 from Player import Player
 from PlayerToken import PlayerToken
+from Timer import Timer
+from CaptureSquare import CaptureSquare
 
 # size = tile count
 # height/width = pixel count
@@ -37,96 +39,27 @@ class Game:
         self.players = []
         self.board = Board()
         self.player_tokens = []
+        self.timer = Timer()
+        self.redPressed = False
+        self.bluePressed = False
+        self.greenPressed = False
+        self.yellowPressed = False
+        self.capture_sqaure = CaptureSquare()
+
 
         self.level = 1
         print((GRID_SIZE//2 - 2))
         if self.board.can_place_card((GRID_SIZE//2 - 2), (GRID_SIZE//2 - 2)):
             self.board.place_card('1a', 'North', 11, 11)
 
-        # if self.board.can_place_card(0, 5):
-        #     self.board.place_card('1b', 'North', 0, 5)
-        # if self.board.can_place_card(1, 9):
-        #     self.board.place_card('1a', 'North', 1, 9)
-        # if self.board.can_place_card(2, 13):
-        #     self.board.place_card('2', 'North', 2, 13)
-        # if self.board.can_place_card(3, 17):
-        #     self.board.place_card('3', 'North', 3, 17)
-        # if self.board.can_place_card(4, 21):
-        #     self.board.place_card('4', 'North', 4, 21)
-        # if self.board.can_place_card(5, 25):
-        #     self.board.place_card('5', 'North', 5, 25)
-        # if self.board.can_place_card(0, 22):
-        #     self.board.place_card('6', 'North', 0, 22)
-        # if self.board.can_place_card(10, 24):
-        #     self.board.place_card('7', 'North', 9, 24)
-        # if self.board.can_place_card(8, 20):
-        #     self.board.place_card('8', 'North', 8, 20)
-        # if self.board.can_place_card(7, 16):
-        #     self.board.place_card('9', 'North', 7, 16)
-        # if self.board.can_place_card(6, 12):
-        #     self.board.place_card('10', 'North', 6, 12)
-        # if self.board.can_place_card(5, 8):
-        #     self.board.place_card('11', 'North', 5, 8)
-        # if self.board.can_place_card(4, 4):
-        #     self.board.place_card('12', 'North', 4, 4)
-        # if self.board.can_place_card(3, 0):
-        #     self.board.place_card('13', 'North', 3, 0)
-        # if self.board.can_place_card(8, 3):
-        #     self.board.place_card('14', 'North', 8, 3)
-        # if self.board.can_place_card(9, 7):
-        #     self.board.place_card('15', 'North', 9, 7) 
-        # if self.board.can_place_card(10, 11):
-        #     self.board.place_card('16', 'North', 10, 11) 
-        # if self.board.can_place_card(11, 15):
-        #     self.board.place_card('17', 'North', 11, 15) 
-        # if self.board.can_place_card(12, 19):
-        #     self.board.place_card('18', 'North', 12, 19) 
-        # if self.board.can_place_card(13, 23):
-        #     self.board.place_card('19', 'North', 13, 23) 
-        # if self.board.can_place_card(12, 2):
-        #     self.board.place_card('20', 'North', 12, 2) 
-        # if self.board.can_place_card(13, 6):
-        #     self.board.place_card('21', 'North', 13, 6) 
-        # if self.board.can_place_card(14, 10):
-        #     self.board.place_card('22', 'North', 14, 10) 
-        # if self.board.can_place_card(15, 14):
-        #     self.board.place_card('23', 'North', 15, 14) 
-        # if self.board.can_place_card(16, 18):
-        #     self.board.place_card('24', 'North', 16,18) 
-        # if self.board.can_place_card(17, 22):
-        #     self.board.place_card('tp', 'North', 17,22) 
-        # if self.board.can_place_card(16, 1):
-        #     self.board.place_card('tp', 'North', 16,1) 
-        # if self.board.can_place_card(17, 5):
-        #     self.board.place_card('tp', 'North', 17,5) 
-        # if self.board.can_place_card(18, 9):
-        #     self.board.place_card('tp', 'North', 18,9) 
-        # if self.board.can_place_card(19, 13):
-        #     self.board.place_card('tp', 'North', 19,13) 
-        # if self.board.can_place_card(20, 17):
-        #     self.board.place_card('tp', 'North', 20,17) 
-        # if self.board.can_place_card(21, 21):
-        #     self.board.place_card('tp', 'North', 21,21) 
-        # if self.board.can_place_card(20, 0):
-        #     self.board.place_card('tp', 'North', 20,0) 
-        # if self.board.can_place_card(21, 4):
-        #     self.board.place_card('tp', 'North', 21,4) 
-        # if self.board.can_place_card(22, 8):
-        #     self.board.place_card('tp', 'North', 22,8) 
-        # if self.board.can_place_card(23, 12):
-        #     self.board.place_card('tp', 'North', 23,12) 
-        # if self.board.can_place_card(24, 16):
-        #     self.board.place_card('tp', 'North', 24,16) 
-        # if self.board.can_place_card(25, 20):
-        #     self.board.place_card('tp', 'North', 25,20) 
-        # if self.board.can_place_card(25, 3):
-        #     self.board.place_card('tp', 'North', 25,3) 
-        # if self.board.can_place_card(25, 3):
-        #     self.board.place_card('tp', 'North', 22,25) 
+    def update_frame(self):
+        self.timer.decrease_time_left()
     
     def draw_header(self):
         """Handles drawing the header in the game"""
         pyxel.rectb(0,0,MAIN_WIDTH, HEADER_HEIGHT, 13)
+        self.timer.draw()
+        self.capture_sqaure.draw()
 
     def draw_players(self):
 
@@ -158,13 +91,13 @@ class Game:
 
         # action, player_trying_to_move, token_to_move, all_tokens):
         if pyxel.btnp(controls[1]['left']):
-            self.players[0].current_token.move('left', self.players[0], self.player_tokens, self.board)
+            self.players[0].current_token.move('left', self.players[0], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[1]['right']):
-            self.players[0].current_token.move('right', self.players[0], self.player_tokens, self.board)
+            self.players[0].current_token.move('right', self.players[0], self.player_tokens, self.board, self.timer ,self)
         if pyxel.btnp(controls[1]['up']):
-            self.players[0].current_token.move('up', self.players[0], self.player_tokens, self.board)
+            self.players[0].current_token.move('up', self.players[0], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[1]['down']):
-            self.players[0].current_token.move('down', self.players[0], self.player_tokens, self.board)
+            self.players[0].current_token.move('down', self.players[0], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[1]['switch']):
             self.players[0].switch_token()
         if pyxel.btnp(controls[1]['special']):
@@ -172,13 +105,13 @@ class Game:
 
         # Player 2 movement
         if pyxel.btnp(controls[2]['left']):
-            self.players[1].current_token.move('left', self.players[1], self.player_tokens, self.board)
+            self.players[1].current_token.move('left', self.players[1], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[2]['right']):
-            self.players[1].current_token.move('right', self.players[1], self.player_tokens, self.board)
+            self.players[1].current_token.move('right', self.players[1], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[2]['up']):
-            self.players[1].current_token.move('up', self.players[1], self.player_tokens, self.board)
+            self.players[1].current_token.move('up', self.players[1], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[2]['down']):
-            self.players[1].current_token.move('down', self.players[1], self.player_tokens, self.board)
+            self.players[1].current_token.move('down', self.players[1], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[2]['switch']):
             self.players[1].switch_token()
         if pyxel.btnp(controls[2]['special']):
@@ -186,27 +119,27 @@ class Game:
 
         # Player 3 movement
         if pyxel.btnp(controls[3]['left']):
-            self.players[2].current_token.move('left', self.players[2], self.player_tokens, self.board)
+            self.players[2].current_token.move('left', self.players[2], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[3]['right']):
-            self.players[2].current_token.move('right', self.players[2], self.player_tokens, self.board)
+            self.players[2].current_token.move('right', self.players[2], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[3]['up']):
-            self.players[2].current_token.move('up', self.players[2], self.player_tokens, self.board)
+            self.players[2].current_token.move('up', self.players[2], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[3]['down']):
-            self.players[2].current_token.move('down', self.players[2], self.player_tokens, self.board)
+            self.players[2].current_token.move('down', self.players[2], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[3]['switch']):
             self.players[2].switch_token()
         if pyxel.btnp(controls[3]['special']):
-            self.board = self.players[2].current_token.special(self.players[2], self.player_tokens, self.board)
+            self.board = self.players[2].current_token.special(self.players[2], self.player_tokens, self.board, self)
 
         # Player 4 movement
         if pyxel.btnp(controls[4]['left']):
-            self.players[3].current_token.move('left', self.players[3], self.player_tokens, self.board)
+            self.players[3].current_token.move('left', self.players[3], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[4]['right']):
-            self.players[3].current_token.move('right', self.players[3], self.player_tokens, self.board)
+            self.players[3].current_token.move('right', self.players[3], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[4]['up']):
-            self.players[3].current_token.move('up', self.players[3], self.player_tokens, self.board)
+            self.players[3].current_token.move('up', self.players[3], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[4]['down']):
-            self.players[3].current_token.move('down', self.players[3], self.player_tokens, self.board)
+            self.players[3].current_token.move('down', self.players[3], self.player_tokens, self.board, self.timer, self)
         if pyxel.btnp(controls[4]['switch']):
             self.players[3].switch_token()
         if pyxel.btnp(controls[4]['special']):

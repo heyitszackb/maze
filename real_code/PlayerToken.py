@@ -77,7 +77,7 @@ class PlayerToken():
         if (direction == 'North') and (token_to_move.color == color):
             if board.can_place_card(token_to_move.board_col - 4, token_to_move.board_row - 1):
                 # place tile
-                board.place_card(randomCard, 'North', token_to_move.board_col- 4, token_to_move.board_row - 1)
+                board.place_card('6', 'North', token_to_move.board_col- 4, token_to_move.board_row - 1)
 
                 # remove walls from the tile
                 board.board[token_to_move.board_row][token_to_move.board_col].north = False
@@ -167,7 +167,7 @@ class PlayerToken():
         return False
 
 
-    def tokenCanMove(self, action, player_trying_to_move, all_tokens, board):
+    def tokenCanMove(self, action, player_trying_to_move, all_tokens, board, timer, game):
         token_to_move = player_trying_to_move.current_token
 
         if self.movingIntoWall(action, token_to_move, board):
@@ -179,14 +179,51 @@ class PlayerToken():
             if token_to_move.board_col == 0:
                 return False
             else:
+                # check if you are moving into a capture (button) space
+                tile_string = board.board[token_to_move.board_row - 1][token_to_move.board_col].tile_type
+                if tile_string:
+                    if 'capture' in tile_string:
+                        if 'red' in tile_string:
+                            if player_trying_to_move.color == 'red':
+                                game.captureSquare.red = True
+                        if 'blue' in tile_string:
+                            if player_trying_to_move.color == 'blue':
+                                game.captureSquare.blue = True
+                        if 'green' in tile_string:
+                            if player_trying_to_move.color == 'green':
+                                game.captureSquare.green = True
+                        if 'yellow' in tile_string:
+                            if player_trying_to_move.color == 'yellow':
+                                game.captureSquare.yellow = True
+
+                
+                
+
+
+
+                # move into a timer space
+                if board.board[token_to_move.board_row][token_to_move.board_col - 1].tile_type == 'timer':
+                    timer.hitTimerSpace()
+                    board.board[token_to_move.board_row][token_to_move.board_col - 1].tile_type = ''
+
                 # check to see if you are going to run into another player
                 for token in all_tokens:
                     if token.board_col == token_to_move.board_col - 1 and token.board_row == token_to_move.board_row:
                         return False
+                    
+                # check to see if you are about to move into a timer space
+                if board.board[token_to_move.board_row][token_to_move.board_col - 1].tile_type == 'timer':
+                    timer.hitTimerSpace()
+
         if action == 'down':
             if token_to_move.board_col == GRID_SIZE - 1:
                 return False
             else:
+
+                # move into a timer space
+                if board.board[token_to_move.board_row][token_to_move.board_col + 1].tile_type == 'timer':
+                    timer.hitTimerSpace()
+                    board.board[token_to_move.board_row][token_to_move.board_col + 1].tile_type = ''
                 # check to see if you are going to run into another player
                 for token in all_tokens:
                     if token.board_col == token_to_move.board_col + 1 and token.board_row == token_to_move.board_row:
@@ -198,16 +235,30 @@ class PlayerToken():
             if token_to_move.board_row == 0:
                 return False
             else:
+                # move into a timer space
+                if board.board[token_to_move.board_row - 1][token_to_move.board_col].tile_type == 'timer':
+                    timer.hitTimerSpace()
+                    board.board[token_to_move.board_row - 1][token_to_move.board_col].tile_type = ''
+                
                 # check to see if you are going to run into another player
                 for token in all_tokens:
                     if token.board_row == token_to_move.board_row - 1 and token.board_col == token_to_move.board_col:
                         return False
+                    
+
                     
         if action == 'right':
             # check to see if you are on the edge of the board
             if token_to_move.board_row == GRID_SIZE - 1:
                 return False
             else:
+
+                # check if you are moving into a timer space
+                if board.board[token_to_move.board_row + 1][token_to_move.board_col].tile_type == 'timer':
+                    timer.hitTimerSpace()
+                    board.board[token_to_move.board_row + 1][token_to_move.board_col].tile_type = ''
+
+
                 # check to see if you are going to run into another player
                 for token in all_tokens:
                     if token.board_row == token_to_move.board_row + 1 and token.board_col == token_to_move.board_col:
@@ -223,9 +274,9 @@ class PlayerToken():
 
 
 
-    def move(self, action, player_trying_to_move, all_tokens, board):
+    def move(self, action, player_trying_to_move, all_tokens, board, timer, game):
 
-        if self.tokenCanMove(action, player_trying_to_move, all_tokens, board):
+        if self.tokenCanMove(action, player_trying_to_move, all_tokens, board, timer, game):
             if action == 'right':
                 self.board_row += 1
             if action == 'left':
