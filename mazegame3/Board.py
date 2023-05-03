@@ -50,6 +50,33 @@ class Board:
         tile_data_for_card = self.get_tile_data_for_card(card_name, dir)
         for row in range(4):
             for col in range(4):
+                # check for adjacent search tiles
+
+
+                # if len(self.board) < board_col + col:
+                #     adjacent_tile_type = self.board[board_col + col][board_row].tile_type
+                #     if adjacent_tile_type and 'search' in adjacent_tile_type:
+                #         self.board[board_col + col][board_row].tile_type = ''
+                # if len(self.board[0]) < board_row + row:
+                #     adjacent_tile_type = self.board[board_col][board_row + row].tile_type
+                #     if adjacent_tile_type and 'search' in adjacent_tile_type:
+                #         self.board[board_col][board_row + row].tile_type = ''
+                # if board_col + col > 0:
+                #     adjacent_tile_type = self.board[board_col + col - 1][board_row].tile_type
+                #     if adjacent_tile_type and 'search' in adjacent_tile_type:
+                #         self.board[board_col + col - 1][board_row].tile_type = ''
+                # if board_row + row > 0:
+                #     adjacent_tile_type = self.board[board_col][board_row + row - 1].tile_type
+                #     if adjacent_tile_type and 'search' in adjacent_tile_type:
+                #         self.board[board_col][board_row + row - 1].tile_type = ''
+                
+
+
+                
+                if len(self.board[0]) < board_row + row:
+                    pass
+
+
                 self.board[board_col + col][board_row + row] = tile_data_for_card[row][col]
                 # save off vortexes
                 tile_type = tile_data_for_card[row][col].tile_type 
