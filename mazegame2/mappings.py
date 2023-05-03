@@ -80,9 +80,9 @@ door_mappings = {
 
 level_mappings = {
     # level -> cards in level
-    'level_1': ['1a','2','3','4','5','6','7','8','9','10','11','12'],
-    'level_2': ['2','3','4','5','6','7','8','9','10','11','12','13','14'], # speaking on green squares
-    'level_3': [],
+    1: ['2','3','4','5','6','7','8','9','10','11','12'],
+    2: ['2','3','4','5','6','7','8','9','10','11','12','13','14'], # speaking on green squares
+    3: ['2','3','4','5','6','7','8','9','10','11','12','13','14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], # speaking on green squares
 }
 
 base_tile_mappings = {
@@ -108,47 +108,83 @@ base_tile_mappings = {
 # Dictionary of controls for each player
 
 controls = {
-    # Player 1 controls (left on gamepad)
-    1: {
-        'right': pyxel.KEY_RIGHT,
-        'left': pyxel.KEY_LEFT,
-        'up': pyxel.KEY_UP,
-        'down': pyxel.KEY_DOWN,
-        'switch': pyxel.KEY_LCTRL,
-        'special': pyxel.KEY_LALT
-    },
-    
-    # Player 2 controls (right on gamepad)
     2: {
-        'right': pyxel.KEY_G,
-        'left': pyxel.KEY_D,
-        'up': pyxel.KEY_R,
-        'down': pyxel.KEY_F,
-        'switch': pyxel.KEY_A,
-        'special': pyxel.KEY_S
-    },
-    
-    # NOTE: Player 3 and 4 should be on different keyboards!
-    
-    # Player 3 controls (left on keyboard)
-    3: {
-        'right': pyxel.KEY_K,
-        'left': pyxel.KEY_H,
-        'up': pyxel.KEY_U,
-        'down': pyxel.KEY_J,
-        'switch': pyxel.KEY_B,
-        'special': pyxel.KEY_V
-    },
-    
-    # Player 4 controls (right on keyboard)
-    4: {
         'right': pyxel.KEY_QUOTE,
         'left': pyxel.KEY_L,
         'up': pyxel.KEY_P,
         'down': pyxel.KEY_SEMICOLON,
         'switch': pyxel.KEY_COMMA,
         'special': pyxel.KEY_M
+    },
+    1: {
+        'right': pyxel.KEY_D,
+        'left': pyxel.KEY_A,
+        'up': pyxel.KEY_W,
+        'down': pyxel.KEY_S,
+        'switch': pyxel.KEY_C,
+        'special': pyxel.KEY_V
+    },
+    3: {
+        'right': pyxel.KEY_1,
+        'left': pyxel.KEY_1,
+        'up': pyxel.KEY_1,
+        'down': pyxel.KEY_1,
+        'switch': pyxel.KEY_1,
+        'special': pyxel.KEY_1
+    },
+    
+    # Player 4 controls (right on keyboard)
+    4: {
+        'right': pyxel.KEY_1,
+        'left': pyxel.KEY_1,
+        'up': pyxel.KEY_1,
+        'down': pyxel.KEY_1,
+        'switch': pyxel.KEY_1,
+        'special': pyxel.KEY_1
     }
+
+    
+    # # Player 1 controls (left on gamepad)
+    # 1: {
+    #     'right': pyxel.KEY_RIGHT,
+    #     'left': pyxel.KEY_LEFT,
+    #     'up': pyxel.KEY_UP,
+    #     'down': pyxel.KEY_DOWN,
+    #     'switch': pyxel.KEY_LCTRL,
+    #     'special': pyxel.KEY_LALT
+    # },
+    
+    # # Player 2 controls (right on gamepad)
+    # 2: {
+    #     'right': pyxel.KEY_G,
+    #     'left': pyxel.KEY_D,
+    #     'up': pyxel.KEY_R,
+    #     'down': pyxel.KEY_F,
+    #     'switch': pyxel.KEY_A,
+    #     'special': pyxel.KEY_S
+    # },
+    
+    # # NOTE: Player 3 and 4 should be on different keyboards!
+    
+    # Player 3 controls (left on keyboard)
+    # 3: {
+    #     'right': pyxel.KEY_K,
+    #     'left': pyxel.KEY_H,
+    #     'up': pyxel.KEY_U,
+    #     'down': pyxel.KEY_J,
+    #     'switch': pyxel.KEY_B,
+    #     'special': pyxel.KEY_V
+    # },
+    
+    # # Player 4 controls (right on keyboard)
+    # 4: {
+    #     'right': pyxel.KEY_QUOTE,
+    #     'left': pyxel.KEY_L,
+    #     'up': pyxel.KEY_P,
+    #     'down': pyxel.KEY_SEMICOLON,
+    #     'switch': pyxel.KEY_COMMA,
+    #     'special': pyxel.KEY_M
+    # }
 }
 
 

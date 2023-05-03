@@ -1,5 +1,5 @@
 import pyxel
-import numpy as np
+# import numpy as np
 from Tile import Tile
 from place_card import place_card
 from constants import TILE_SIZE, GRID_SIZE, HEADER_SIZE, PANNEL_SIZE
@@ -20,8 +20,8 @@ class App:
         pyxel.init(self.main_width, self.main_height)
         pyxel.load('game.pyxres')
         pyxel.mouse(visible=True)
-        self.game = Game()
-        self.game.initPlayers(4)
+        self.game = Game(level=1)
+        self.game.initPlayers(2)
         
         pyxel.run(self.update, self.draw)
 
@@ -29,7 +29,6 @@ class App:
         if pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
         if pyxel.btnp(pyxel.KEY_SPACE):
-            print("actions")
             self.game.shift_actions()
         self.game.detect_inputs()
         self.game.update_frame()

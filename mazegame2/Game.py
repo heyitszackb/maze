@@ -2,12 +2,13 @@ import pyxel
 from Tile import Tile
 from place_card import place_card
 from constants import TILE_SIZE, GRID_SIZE, HEADER_SIZE, PANNEL_SIZE
-from mappings import player_action_mappings, controls
+from mappings import player_action_mappings, controls, level_mappings
 from Board import Board
 from Player import Player
 from PlayerToken import PlayerToken
 from Timer import Timer
 from CaptureSquare import CaptureSquare
+import random
 
 # size = tile count
 # height/width = pixel count
@@ -27,7 +28,7 @@ GRID_WIDTH = TILE_SIZE * GRID_SIZE
 # continue to copy relevant code from players.py to get the tokens moving on the screen.
 
 class Game:
-    def __init__(self):
+    def __init__(self, level):
         self.main_width = MAIN_WIDTH
         self.main_height = MAIN_HEIGHT
         self.header_height = HEADER_HEIGHT
@@ -45,15 +46,15 @@ class Game:
         self.greenPressed = False
         self.yellowPressed = False
         self.capture_sqaure = CaptureSquare()
-
-
-        self.level = 1
-        print((GRID_SIZE//2 - 2))
-        if self.board.can_place_card((GRID_SIZE//2 - 2), (GRID_SIZE//2 - 2)):
-            self.board.place_card('1a', 'North', 11, 11)
+        self.cards_in_play = level_mappings[level]
+        self.cards_in_play
+        random.shuffle(self.cards_in_play)
 
     def update_frame(self):
         self.timer.decrease_time_left()
+
+    def getCardFromPile(self):
+        return self.cards_in_play.pop()
     
     def draw_header(self):
         """Handles drawing the header in the game"""
@@ -101,7 +102,7 @@ class Game:
         if pyxel.btnp(controls[1]['switch']):
             self.players[0].switch_token()
         if pyxel.btnp(controls[1]['special']):
-            self.board = self.players[0].current_token.special(self.players[0], self.player_tokens, self.board)
+            self.board = self.players[0].current_token.special(self.players[0], self.player_tokens, self.board, self)
 
         # Player 2 movement
         if pyxel.btnp(controls[2]['left']):
@@ -115,7 +116,7 @@ class Game:
         if pyxel.btnp(controls[2]['switch']):
             self.players[1].switch_token()
         if pyxel.btnp(controls[2]['special']):
-            self.board = self.players[1].current_token.special(self.players[1], self.player_tokens, self.board)
+            self.board = self.players[1].current_token.special(self.players[1], self.player_tokens, self.board, self)
 
         # Player 3 movement
         if pyxel.btnp(controls[3]['left']):
@@ -143,7 +144,7 @@ class Game:
         if pyxel.btnp(controls[4]['switch']):
             self.players[3].switch_token()
         if pyxel.btnp(controls[4]['special']):
-            self.board = self.players[3].current_token.special(self.players[3], self.player_tokens, self.board)
+            self.board = self.players[3].current_token.special(self.players[3], self.player_tokens, self.board, self)
             
 
     def initPlayers(self, numPlayers):

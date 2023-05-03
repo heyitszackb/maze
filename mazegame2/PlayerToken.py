@@ -52,7 +52,7 @@ class PlayerToken():
         self.players_with_token_selected.remove(player)
 
 
-    def spawnNewTile(self, current_tile_type, token_to_move, board):
+    def spawnNewTile(self, current_tile_type, token_to_move, board, game):
         pyxel.play(1, 1)
         direction =  ''
         color = ''
@@ -80,7 +80,7 @@ class PlayerToken():
         if (direction == 'North') and (token_to_move.color == color):
             if board.can_place_card(token_to_move.board_col - 4, token_to_move.board_row - 1):
                 # place tile
-                board.place_card('6', 'North', token_to_move.board_col- 4, token_to_move.board_row - 1)
+                board.place_card(game.getCardFromPile(), 'North', token_to_move.board_col- 4, token_to_move.board_row - 1)
 
                 # remove walls from the tile
                 board.board[token_to_move.board_row][token_to_move.board_col].north = False
@@ -92,7 +92,7 @@ class PlayerToken():
         if (direction == 'South') and (token_to_move.color == color):
             if board.can_place_card(token_to_move.board_col + 1, token_to_move.board_row - 2):
                 # place tile
-                board.place_card(randomCard, 'South', token_to_move.board_col + 1, token_to_move.board_row - 2)
+                board.place_card(game.getCardFromPile(), 'South', token_to_move.board_col + 1, token_to_move.board_row - 2)
 
                 # remove walls from the tile
                 board.board[token_to_move.board_row][token_to_move.board_col].south = False
@@ -104,7 +104,7 @@ class PlayerToken():
         if (direction == 'East') and (token_to_move.color == color):
             if board.can_place_card(token_to_move.board_col - 1, token_to_move.board_row + 1):
                 # place tile
-                board.place_card(randomCard, 'East', token_to_move.board_col - 1, token_to_move.board_row + 1)
+                board.place_card(game.getCardFromPile(), 'East', token_to_move.board_col - 1, token_to_move.board_row + 1)
 
                 # remove walls from the tile
                 board.board[token_to_move.board_row][token_to_move.board_col].east = False
@@ -116,7 +116,7 @@ class PlayerToken():
         if (direction == 'West') and (token_to_move.color == color):
             if board.can_place_card(token_to_move.board_col - 2, token_to_move.board_row - 4):
                 # place tile
-                board.place_card(randomCard, 'West', token_to_move.board_col - 2, token_to_move.board_row - 4)
+                board.place_card(game.getCardFromPile(), 'West', token_to_move.board_col - 2, token_to_move.board_row - 4)
 
                 # remove walls from the tile
                 board.board[token_to_move.board_row][token_to_move.board_col].west = False
@@ -125,11 +125,34 @@ class PlayerToken():
                 # remove that tile as a search tile
                 board.board[token_to_move.board_row][token_to_move.board_col].set_tile_type('')
 
-
         return board
+    
+    def tokenAt(self, row, col, board, game):
+        for player_token in game.player_tokens:
+            if player_token.board_row == row and player_token.board_col == col:
+                return True
+        return False
+    
+    def moveToNextVortex(self, color, token_to_move, board, game):
+        # get current index and then simply move to the next one
+        if token_to_move.color == color:
+            current_index = board.vortexesOnBoard[color].index([token_to_move.board_row, token_to_move.board_col])
+            current_index = (current_index + 1) % len(board.vortexesOnBoard[color])
+
+            print(current_index)
+            # is there anything at this index?
+            while self.tokenAt(board.vortexesOnBoard[color][current_index][0], board.vortexesOnBoard[color][current_index][1], board, game):
+                #if we are checking our own piece, break out, there are no spaces available
+                if board.vortexesOnBoard[color][current_index][0] == token_to_move.board_row and board.vortexesOnBoard[color][current_index][1] == token_to_move.board_col:
+                    # stay put sound? (general "error" sound? Probably good)
+                    break
+                current_index = (current_index + 1) % len(board.vortexesOnBoard[color])
+            # successful vortex sound
+            pyxel.playm(1, loop=False)
+            self.board_row, self.board_col = board.vortexesOnBoard[color][(current_index) % len(board.vortexesOnBoard[color])]
 
 
-    def special(self, player_trying_to_move, all_tokens, board):
+    def special(self, player_trying_to_move, all_tokens, board, game):
         # print('special')
         token_to_move = player_trying_to_move.current_token
 
@@ -138,20 +161,23 @@ class PlayerToken():
         if current_tile_type:
             if 'search' in current_tile_type:
                 if 'search' in player_trying_to_move.actions:
-                    board = self.spawnNewTile(current_tile_type, token_to_move, board)
-                    print('search')
+                    board = self.spawnNewTile(current_tile_type, token_to_move, board, game)
             elif 'vortex' in current_tile_type:
-                print('vortex')
+                if 'vortex' in player_trying_to_move.actions:
+                    if 'red' in current_tile_type:
+                        self.moveToNextVortex('red', token_to_move, board, game)
+                    if 'green' in current_tile_type:
+                        self.moveToNextVortex('green', token_to_move, board, game)
+                    if 'blue' in current_tile_type:
+                        self.moveToNextVortex('blue', token_to_move, board, game)
+                    if 'yellow' in current_tile_type:
+                        self.moveToNextVortex('yellow', token_to_move, board, game)
         
         return board
 
 
 
     def movingIntoWall(self, action, token_to_move, board):
-        print('North:', board.board[token_to_move.board_row][token_to_move.board_col].north)
-        print('West:', board.board[token_to_move.board_row][token_to_move.board_col].west)
-        print('East:', board.board[token_to_move.board_row][token_to_move.board_col].east)
-        print('South', board.board[token_to_move.board_row][token_to_move.board_col].south)
         if action == 'up':
             if board.board[token_to_move.board_row][token_to_move.board_col].north == True:
                 return True
@@ -204,31 +230,17 @@ class PlayerToken():
 
 
 
-                # move into a timer space
-                if board.board[token_to_move.board_row][token_to_move.board_col - 1].tile_type == 'timer':
-                    timer.hitTimerSpace()
-                    board.board[token_to_move.board_row][token_to_move.board_col - 1].tile_type = ''
-                    # game.shift_actions()
 
                 # check to see if you are going to run into another player
                 for token in all_tokens:
                     if token.board_col == token_to_move.board_col - 1 and token.board_row == token_to_move.board_row:
                         return False
                     
-                # check to see if you are about to move into a timer space
-                if board.board[token_to_move.board_row][token_to_move.board_col - 1].tile_type == 'timer':
-                    timer.hitTimerSpace()
-                    # game.shift_actions()
 
         if action == 'down':
             if token_to_move.board_col == GRID_SIZE - 1:
                 return False
             else:
-
-                # move into a timer space
-                if board.board[token_to_move.board_row][token_to_move.board_col + 1].tile_type == 'timer':
-                    timer.hitTimerSpace()
-                    board.board[token_to_move.board_row][token_to_move.board_col + 1].tile_type = ''
                     
                 # check to see if you are going to run into another player
                 for token in all_tokens:
@@ -241,10 +253,6 @@ class PlayerToken():
             if token_to_move.board_row == 0:
                 return False
             else:
-                # move into a timer space
-                if board.board[token_to_move.board_row - 1][token_to_move.board_col].tile_type == 'timer':
-                    timer.hitTimerSpace()
-                    board.board[token_to_move.board_row - 1][token_to_move.board_col].tile_type = ''
                 
                 # check to see if you are going to run into another player
                 for token in all_tokens:
@@ -258,14 +266,6 @@ class PlayerToken():
             if token_to_move.board_row == GRID_SIZE - 1:
                 return False
             else:
-
-                # check if you are moving into a timer space
-                if board.board[token_to_move.board_row + 1][token_to_move.board_col].tile_type == 'timer':
-                    timer.hitTimerSpace()
-                    board.board[token_to_move.board_row + 1][token_to_move.board_col].tile_type = ''
-                    # game.shift_actions()
-
-
                 # check to see if you are going to run into another player
                 for token in all_tokens:
                     if token.board_row == token_to_move.board_row + 1 and token.board_col == token_to_move.board_col:
@@ -279,20 +279,27 @@ class PlayerToken():
         
 
 
-
+    def resolveSpecialTileLogic(self, action, player_trying_to_move, all_tokens, board, timer, game):
+        if board.board[self.board_row][self.board_col].tile_type == 'timer':
+            timer.hitTimerSpace()
+            board.board[self.board_row][self.board_col].tile_type = ''
+            game.shift_actions()
 
     def move(self, action, player_trying_to_move, all_tokens, board, timer, game):
 
         if self.tokenCanMove(action, player_trying_to_move, all_tokens, board, timer, game):
-            pyxel.play(0, 0)
+            pyxel.play(0,0)
             if action == 'right':
                 self.board_row += 1
+                
             if action == 'left':
                 self.board_row -= 1
             if action == 'up':
                 self.board_col -= 1
             if action == 'down':
                 self.board_col += 1
+            self.resolveSpecialTileLogic(action, player_trying_to_move, all_tokens, board, timer, game)
         else:
             # the player cannot move in that direction, play a sound or add animation or something
-            print('you cant move that way.')
+            # print('you cant move that way.')
+            pass

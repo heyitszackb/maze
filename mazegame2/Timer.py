@@ -28,6 +28,7 @@ class Timer:
 
     def hitTimerSpace(self):
         INCREASE = 40
+        pyxel.play(3,3)
         if self.time_left + INCREASE <= self.max_time:
             self.time_left += INCREASE
         else:

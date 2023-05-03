@@ -10,6 +10,15 @@ class Board:
     def __init__(self):
         self.board = self.init_board()
         self.size = GRID_SIZE
+        self.vortexesOnBoard = {} # indexs: 'red', 'blue', 'green', 'yellow' (value is an array of tiles that have that color on them)
+        self.vortexesOnBoard['red'] = []
+        self.vortexesOnBoard['blue'] = []
+        self.vortexesOnBoard['green'] = []
+        self.vortexesOnBoard['yellow'] = []
+    
+        if self.can_place_card((GRID_SIZE//2 - 2), (GRID_SIZE//2 - 2)):
+            self.place_card('1a', 'North', 11, 11)
+
     
     def init_board(self):
         board = []
@@ -42,6 +51,19 @@ class Board:
         for row in range(4):
             for col in range(4):
                 self.board[board_col + col][board_row + row] = tile_data_for_card[row][col]
+                # save off vortexes
+                tile_type = tile_data_for_card[row][col].tile_type 
+                if tile_type and 'vortex' in tile_type:
+                    if 'red' in tile_type:
+                        self.vortexesOnBoard['red'].append([board_col + col, board_row + row])
+                    if 'blue' in tile_type:
+                        self.vortexesOnBoard['blue'].append([board_col + col, board_row + row])
+                    if 'green' in tile_type:
+                        self.vortexesOnBoard['green'].append([board_col + col, board_row + row])
+                    if 'yellow' in tile_type:
+                        self.vortexesOnBoard['yellow'].append([board_col + col, board_row + row])
+
+
         return self.board
     
     def get_tile_data_for_card(self, card_name, dir):
